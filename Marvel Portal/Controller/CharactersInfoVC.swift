@@ -6,24 +6,32 @@
 //
 
 import UIKit
+import Kingfisher
 
 class CharactersInfoVC: UIViewController {
 
+    @IBOutlet weak var backBtnOutlet: UIButton!
+    @IBOutlet weak var characterImage: UIImageView!
+    @IBOutlet weak var characterName: UILabel!
+    @IBOutlet weak var characterId: UILabel!
+    
+    var indexValueIs = 0
+    let stringValue = [CharactersName]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        backBtnOutlet.layer.cornerRadius = 10
+        backBtnOutlet.layer.borderWidth = 2
+        backBtnOutlet.layer.borderColor = UIColor.white.cgColor
+        charactesInfo()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @IBAction func backBtn(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
     }
-    */
-
+    func charactesInfo() {
+        let result = stringValue[indexValueIs].id
+        //characterImage.kf.setImage(with: URL(string: result))
+        characterId.text = String(result)
+    }
 }

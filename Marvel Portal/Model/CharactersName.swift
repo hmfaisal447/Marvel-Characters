@@ -8,4 +8,6 @@
 import Foundation
 struct CharactersName {
     let name: String
+    let id: Int
+    let characterImage: String
 }

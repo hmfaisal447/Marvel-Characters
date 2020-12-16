@@ -8,13 +8,13 @@
 import Foundation
 import UIKit
 protocol APIManagerDelegate {
-    func didUpdate(storeReturnData: String)
+    func didUpdate(jSONReturnData: [CharactersName])
     func didFailWithError(error: Error)
 }
 struct APIManager {
     var delegate: APIManagerDelegate?
-    func performRequest(with storeUrl: String) {
-        if let url = URL(string: storeUrl) {
+    func performRequest(with UrlString: String) {
+        if let url = URL(string: UrlString) {
             let session = URLSession(configuration: .default)
             let task = session.dataTask(with: url) { (data, response, error) in
                 if error != nil {
@@ -22,29 +22,34 @@ struct APIManager {
                     return
                 }
                 if let safeData = data {
-                    if let storeData = self.parseJSON(safeData) {
-                        self.delegate?.didUpdate(storeReturnData: storeData)
+                    if let parsingData = self.parseJSON(safeData) {
+                        self.delegate?.didUpdate(jSONReturnData: parsingData)
                     }
                 }
             }
             task.resume()
         }
     }
-    func parseJSON(_ getStoreData: Data) -> String? {
+    func parseJSON(_ getAPIData: Data) -> [CharactersName]? {
         let decoder = JSONDecoder()
         do {
-            let decodedData = try decoder.decode(CharactersList.self, from: getStoreData)
-            var arr: [MarvelCharactersName] = []
-            for count in 0...3 {
-                let name = decodedData.
-            let returnValue = StoreReturnData(name: name, price: price, image: image)
-            arr.append(returnValue)
+            let decodeData = try decoder.decode(APICharactersList.self, from: getAPIData)
+            var arr: [CharactersName] = []
+            for count in 0...19 {
+            let name = decodeData.data.results[count].name
+            let id = decodeData.data.results[count].id
+                let ImageUrl = decodeData.data.results[count].thumbnail.path
+                let extention = decodeData.data.results[count].thumbnail.thumbnailExtension
+                let characterImage = "\(ImageUrl).\(extention)"
+                let returnValueIs = CharactersName(name: name, id: id, characterImage: characterImage)
+            arr.append(returnValueIs)
             }
             return arr
-            
         }catch {
-            delegate?.didFailWithError(error: error)
+            self.delegate?.didFailWithError(error: error)
+            print(error)
             return nil
         }
     }
 }
+

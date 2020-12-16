@@ -6,3 +6,7 @@
 //
 
 import Foundation
+struct K {
+    static let CVcellIdentity = "CVcellIdentifier"
+    static let segueCharactersInfo = "gotoCharactersInfo"
+}
