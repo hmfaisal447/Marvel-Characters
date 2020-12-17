@@ -11,12 +11,11 @@ import Kingfisher
 class CharactersInfoVC: UIViewController {
 
     @IBOutlet weak var backBtnOutlet: UIButton!
-    @IBOutlet weak var characterImage: UIImageView!
+    @IBOutlet weak var imageView: imageView!
     @IBOutlet weak var characterName: UILabel!
     @IBOutlet weak var characterId: UILabel!
     
-    var indexValueIs = 0
-    let stringValue = [CharactersName]()
+    var selectedCharacterIs = [CharactersName]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,8 +29,23 @@ class CharactersInfoVC: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     func charactesInfo() {
-        let result = stringValue[indexValueIs].id
-        //characterImage.kf.setImage(with: URL(string: result))
-        characterId.text = String(result)
+        characterId.text = String("ID: \(selectedCharacterIs[0].id)")
+        characterName.text = selectedCharacterIs[0].name
+        imageView.kf.setImage(with: URL(string: selectedCharacterIs[0].characterImage))
+
+    }
+}
+class imageView: UIImageView {
+    override public func layoutSubviews() {
+        super.layoutSubviews()
+        self.roundUpCorners([.bottomLeft, .bottomRight], radius: 30)
+    }
+}
+extension UIView {
+    func roundUpCorners(_ corners: UIRectCorner, radius: CGFloat) {
+        let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        let mask = CAShapeLayer()
+        mask.path = path.cgPath
+        self.layer.mask = mask
     }
 }

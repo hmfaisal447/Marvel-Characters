@@ -36,13 +36,13 @@ struct APIManager {
             let decodeData = try decoder.decode(APICharactersList.self, from: getAPIData)
             var arr: [CharactersName] = []
             for count in 0...19 {
-            let name = decodeData.data.results[count].name
-            let id = decodeData.data.results[count].id
+                let name = decodeData.data.results[count].name
+                let id = decodeData.data.results[count].id
                 let ImageUrl = decodeData.data.results[count].thumbnail.path
                 let extention = decodeData.data.results[count].thumbnail.thumbnailExtension
                 let characterImage = "\(ImageUrl).\(extention)"
                 let returnValueIs = CharactersName(name: name, id: id, characterImage: characterImage)
-            arr.append(returnValueIs)
+                arr.append(returnValueIs)
             }
             return arr
         }catch {

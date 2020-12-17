@@ -207,7 +207,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="marvel-avengers-characters-cast-voice-actors" translatesAutoresizingMaskIntoConstraints="NO" id="8ee-ZA-hFo">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="marvel-avengers-characters-cast-voice-actors" translatesAutoresizingMaskIntoConstraints="NO" id="8ee-ZA-hFo" customClass="imageView" customModule="Marvel_Portal" customModuleProvider="target">
                                 <rect key="frame" x="5" y="44" width="404" height="500"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="500" id="vpo-19-AtB"/>
@@ -215,6 +215,7 @@
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gQo-zC-k5K">
                                 <rect key="frame" x="20" y="54" width="40" height="40"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="HJz-dR-nAb"/>
                                     <constraint firstAttribute="width" constant="40" id="tzz-n5-PY4"/>
@@ -227,8 +228,8 @@
                                     <action selector="backBtn:" destination="g0X-fg-mom" eventType="touchUpInside" id="gp4-AH-igD"/>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="-10" translatesAutoresizingMaskIntoConstraints="NO" id="hYY-AU-SdR">
-                                <rect key="frame" x="0.0" y="564" width="414" height="90"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="hYY-AU-SdR">
+                                <rect key="frame" x="0.0" y="564" width="414" height="70.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dex-VH-qZT">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
@@ -236,14 +237,17 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="3yr-L8-RSM"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="22"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xsU-2R-e1A">
-                                        <rect key="frame" x="0.0" y="40" width="414" height="50"/>
+                                        <rect key="frame" x="0.0" y="50" width="414" height="20.5"/>
                                         <color key="backgroundColor" name="backgroundColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20.5" id="zKY-HH-VjG"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -267,8 +271,8 @@
                     <connections>
                         <outlet property="backBtnOutlet" destination="gQo-zC-k5K" id="ppw-bl-Twy"/>
                         <outlet property="characterId" destination="xsU-2R-e1A" id="MUJ-h9-bcC"/>
-                        <outlet property="characterImage" destination="8ee-ZA-hFo" id="PJO-vp-JgP"/>
                         <outlet property="characterName" destination="Dex-VH-qZT" id="2Y2-k5-bXd"/>
+                        <outlet property="imageView" destination="8ee-ZA-hFo" id="PJO-vp-JgP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YqB-cV-jX4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -284,6 +288,9 @@
         <namedColor name="backgroundColor">
             <color red="0.95300000905990601" green="0.96100002527236938" blue="0.97600001096725464" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemGrayColor">
             <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

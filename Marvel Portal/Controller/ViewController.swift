@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     var UrlString = "https://gateway.marvel.com/v1/public/characters?apikey=af90b9c5e94e958d4dbdc256de7db281&hash=1c8cb8cb6b4462d4a81714ca65e05234&ts=1"
     var apiManager = APIManager()
     var indexValue = 0
+    var selectedCharacter = [CharactersName]()
     var searchedCharacter = [String]()
     var searching = false
     let charactersNameArr = ["3-D Man","A-Bomb (HAS)","A.I.M.","Aaron Stack","Abomination (Emil Blonsky)","Abomination (Ultimate)","Absorbing Man","Abyss","Abyss (Age of Apocalypse)","Adam Destine","Adam Warlock","Aegis (Trey Rollins)","Agent Brand","Agent X (Nijo)","Agent Zero","Agents of Atlas","Aginar","Air-Walker (Gabriel Lan)","Ajak","Ajaxis"]
@@ -36,7 +37,7 @@ class ViewController: UIViewController {
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let nextViewController = segue.destination as? CharactersInfoVC {
-            nextViewController.indexValueIs = indexValue
+            nextViewController.selectedCharacterIs = selectedCharacter
         }
     }
 }
@@ -52,6 +53,8 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         indexValue = indexPath.item
+        let data = stringValue[indexValue]
+        selectedCharacter = [data]
         performSegue(withIdentifier: K.segueCharactersInfo, sender: self)
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
