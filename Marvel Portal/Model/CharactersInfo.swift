@@ -6,8 +6,14 @@
 //
 
 import Foundation
-struct CharactersName {
+struct CharactersInfo {
     let name: String
     let id: Int
     let characterImage: String
+    let description: String
+    let resourceData: [ResourceInfo]
+}
+struct ResourceInfo {
+    let resourceName: String
+    let resourceUrl: String
 }

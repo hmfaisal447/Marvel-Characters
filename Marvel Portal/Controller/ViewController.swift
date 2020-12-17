@@ -11,32 +11,31 @@ import  Kingfisher
 class ViewController: UIViewController {
 
     @IBOutlet weak var charactersNameCV: UICollectionView!
-    @IBOutlet weak var headerImageView: UIImageView!
-    @IBOutlet weak var headerUiView: UIView!
-    @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var characterSearchBar: UISearchBar!
     
-    var stringValue = [CharactersName]()
-    var UrlString = "https://gateway.marvel.com/v1/public/characters?apikey=af90b9c5e94e958d4dbdc256de7db281&hash=1c8cb8cb6b4462d4a81714ca65e05234&ts=1"
+    var stringValue = [CharactersInfo]()
+    
     var apiManager = APIManager()
     var indexValue = 0
-    var selectedCharacter = [CharactersName]()
+    var selectedCharacter = [CharactersInfo]()
     var searchedCharacter = [String]()
     var searching = false
     let charactersNameArr = ["3-D Man","A-Bomb (HAS)","A.I.M.","Aaron Stack","Abomination (Emil Blonsky)","Abomination (Ultimate)","Absorbing Man","Abyss","Abyss (Age of Apocalypse)","Adam Destine","Adam Warlock","Aegis (Trey Rollins)","Agent Brand","Agent X (Nijo)","Agent Zero","Agents of Atlas","Aginar","Air-Walker (Gabriel Lan)","Ajak","Ajaxis"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.headerImageView.layer.cornerRadius = 10
+        
+        navigationItem.title = "Marvel Characters"
         characterSearchBar.delegate = self
         charactersNameCV.dataSource = self
         charactersNameCV.delegate = self
         apiManager.delegate = self
-        apiManager.performRequest(with: UrlString)
+        apiManager.performRequest(with: K.UrlString)
         
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let nextViewController = segue.destination as? CharactersInfoVC {
+        if let nextViewController = segue.destination as? CharacterResourceVC {
+            //nextViewController.selectedCharacterIs = selectedCharacter
             nextViewController.selectedCharacterIs = selectedCharacter
         }
     }
@@ -49,7 +48,6 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
         } else {
             return stringValue.count
         }
-        
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         indexValue = indexPath.item
@@ -76,14 +74,13 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     }
 }
 extension ViewController: APIManagerDelegate {
-    func didUpdate(jSONReturnData: [CharactersName]) {
+    func didUpdate(jSONReturnData: [CharactersInfo]) {
         DispatchQueue.main.async {
             self.stringValue = jSONReturnData
             self.charactersNameCV.reloadData()
             //print(jSONReturnData.name)
         }
     }
-    
     func didFailWithError(error: Error) {
         print(error)
     }

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 protocol APIManagerDelegate {
-    func didUpdate(jSONReturnData: [CharactersName])
+    func didUpdate(jSONReturnData: [CharactersInfo])
     func didFailWithError(error: Error)
 }
 struct APIManager {
@@ -30,24 +30,31 @@ struct APIManager {
             task.resume()
         }
     }
-    func parseJSON(_ getAPIData: Data) -> [CharactersName]? {
+    func parseJSON(_ getAPIData: Data) -> [CharactersInfo]? {
         let decoder = JSONDecoder()
         do {
             let decodeData = try decoder.decode(APICharactersList.self, from: getAPIData)
-            var arr: [CharactersName] = []
-            for count in 0...19 {
-                let name = decodeData.data.results[count].name
-                let id = decodeData.data.results[count].id
-                let ImageUrl = decodeData.data.results[count].thumbnail.path
-                let extention = decodeData.data.results[count].thumbnail.thumbnailExtension
+            var arr: [CharactersInfo] = []
+            var resourceArr: [ResourceInfo] = []
+            for item in decodeData.data.results {
+                let name = item.name
+                let id = item.id
+                let ImageUrl = item.thumbnail.path
+                let extention = item.thumbnail.thumbnailExtension
                 let characterImage = "\(ImageUrl).\(extention)"
-                let returnValueIs = CharactersName(name: name, id: id, characterImage: characterImage)
+                let description = item.description
+                for count in item.comics.items {
+                    let resourceName = count.name
+                    let resourceUrl = count.resourceURI
+                    let returnResource = ResourceInfo(resourceName: resourceName, resourceUrl: resourceUrl)
+                    resourceArr.append(returnResource)
+                }
+                let returnValueIs = CharactersInfo(name: name, id: id, characterImage: characterImage, description: description, resourceData: resourceArr)
                 arr.append(returnValueIs)
             }
             return arr
         }catch {
             self.delegate?.didFailWithError(error: error)
-            print(error)
             return nil
         }
     }

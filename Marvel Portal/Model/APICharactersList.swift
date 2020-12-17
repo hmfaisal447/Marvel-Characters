@@ -25,7 +25,9 @@ struct Result: Codable {
     let name: String
     //let modified: Date
     let thumbnail: Thumbnail
+    let description: String
     //let resourceURI: String
+    let comics: Comics
     //let comics, series: Comics
     //let stories: Stories
     //let events: Comics
@@ -38,19 +40,19 @@ struct Result: Codable {
     //}
 }
 
-// MARK: - Comics
-//struct Comics: Codable {
-    //let available: Int
-    //let collectionURI: String
-    //let items: [ComicsItem]
+ //MARK: - Comics
+struct Comics: Codable {
+//    let available: Int
+//    let collectionURI: String
+    let items: [ComicsItem]
     //let returned: Int
-//}
+}
 
-// MARK: - ComicsItem
-//struct ComicsItem: Codable {
-    //let resourceURI: String
-    //let name: String
-//}
+ //MARK: - ComicsItem
+struct ComicsItem: Codable {
+    let resourceURI: String
+    let name: String
+}
 
 //// MARK: - Stories
 //struct Stories: Codable {
