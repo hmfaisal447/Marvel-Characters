@@ -16,15 +16,23 @@ class CharacterResourceVC: UIViewController {
     var indexValueIs = 0
     var innerIndex = 0
     var selectedCharacterIs = [CharactersInfo]()
+    var resourceVCSelectedIndex = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //charactersInfoCV.backgroundView = UIImage(named: "marvel-avengers-characters-cast-voice-actors")
+        //navigationItem.backButtonTitle = "Back"
+        navigationItem.backButtonTitle = "Back"
+        navigationItem.title = selectedCharacterIs[0].name
         charactersInfoCV.delegate = self
         charactersInfoCV.dataSource = self
         apiManager.delegate = self
         apiManager.performRequest(with: K.UrlString)
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let nextViewController = segue.destination as? CharactersInfoVC {
+            nextViewController.selectedCh = selectedCharacterIs
+            nextViewController.resourceVCSelectedIndexIs = resourceVCSelectedIndex
+        }
     }
 }
 
@@ -32,6 +40,10 @@ extension CharacterResourceVC: UICollectionViewDelegate, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         innerIndex = selectedCharacterIs[indexValueIs].resourceData.count
         return selectedCharacterIs[indexValueIs].resourceData.count
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        resourceVCSelectedIndex = indexPath.item
+        performSegue(withIdentifier: K.segueInfoVC, sender: self)
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let data = selectedCharacterIs[indexValueIs].resourceData[indexPath.item]

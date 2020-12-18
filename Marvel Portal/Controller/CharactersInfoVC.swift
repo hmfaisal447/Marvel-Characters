@@ -12,25 +12,37 @@ class CharactersInfoVC: UIViewController {
     
     @IBOutlet weak var imageView: imageView!
     @IBOutlet weak var characterId: UILabel!
+    @IBOutlet weak var characterFirstName: UILabel!
+    @IBOutlet weak var characterSecondName: UILabel!
     @IBOutlet weak var textView: UITextView!
     
-    var selectedCharacterIs = [CharactersInfo]()
+    var selectedCh = [CharactersInfo]()
+    var resourceVCSelectedIndexIs = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = selectedCharacterIs[0].name
+        navigationItem.title = selectedCh[0].name
         navigationItem.backButtonTitle = "Back"
-        
+        characterId.layer.borderWidth = 0.8
+        characterId.layer.cornerRadius = 10
+        characterFirstName.layer.borderWidth = 0.8
+        characterFirstName.layer.cornerRadius = 10
+        characterSecondName.layer.borderWidth = 0.8
+        characterSecondName.layer.cornerRadius = 10
+        textView.layer.borderWidth = 0.8
+        textView.layer.cornerRadius = 10
         charactesInfo()
     }
     func charactesInfo() {
-        //characterId.text = String("ID: \(selectedCharacterIs[0].id)")
-        if selectedCharacterIs[0].description == "" {
-            textView.text = "This character has no description in API"
+        characterId.text = String("\(selectedCh[0].id)")
+        if selectedCh[0].description == "" {
+            textView.text = "\(selectedCh[0].name) has no API description\n==>>\nURL: \(selectedCh[0].resourceData[resourceVCSelectedIndexIs].resourceUrl)"
         }else {
-            textView.text = selectedCharacterIs[0].description
+            textView.text = "\(selectedCh[0].description)\n==>>\nURL: \(selectedCh[0].resourceData[resourceVCSelectedIndexIs].resourceUrl)"
         }
-        imageView.kf.setImage(with: URL(string: selectedCharacterIs[0].characterImage))
+        imageView.kf.setImage(with: URL(string: selectedCh[0].characterImage))
+        characterFirstName.text = selectedCh[0].name
+        characterSecondName.text = selectedCh[0].resourceData[resourceVCSelectedIndexIs].resourceName
     }
 }
 // MARK:- Round Image View
