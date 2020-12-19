@@ -20,14 +20,19 @@ class CharacterResourceVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //navigationItem.backButtonTitle = "Back"
-        navigationItem.backButtonTitle = "Back"
-        navigationItem.title = selectedCharacterIs[0].name
         charactersInfoCV.delegate = self
         charactersInfoCV.dataSource = self
         apiManager.delegate = self
         apiManager.performRequest(with: K.UrlString)
     }
+    override func viewWillAppear(_ animated: Bool) {
+        navigationItem.title = selectedCharacterIs[0].name
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationItem.title = "Back"
+    }
+    
+    // MARK:- prepareSegue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let nextViewController = segue.destination as? CharactersInfoVC {
             nextViewController.selectedCh = selectedCharacterIs
@@ -35,7 +40,7 @@ class CharacterResourceVC: UIViewController {
         }
     }
 }
-
+// MARK:- UICollectionViewDelegate, UICollectionViewDataSource
 extension CharacterResourceVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         innerIndex = selectedCharacterIs[indexValueIs].resourceData.count
@@ -48,20 +53,26 @@ extension CharacterResourceVC: UICollectionViewDelegate, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let data = selectedCharacterIs[indexValueIs].resourceData[indexPath.item]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: K.resourceIdentifier, for: indexPath) as! MarvelCVCell
-        
         cell.characterResourceName.text = data.resourceName
         cell.characterResourceUrl.text = data.resourceUrl
-        cell.layer.borderWidth = 0.8
-        cell.layer.cornerRadius = 10
+        cell.contentView.layer.cornerRadius = 15.0
+        cell.contentView.layer.shadowColor = UIColor.black.cgColor
+        cell.contentView.layer.masksToBounds = true
+        cell.layer.shadowOffset = CGSize(width: 0, height: 0.1)
+        cell.layer.shadowRadius = 4.0
+        cell.layer.shadowOpacity = 0.3
+        cell.layer.cornerRadius = 15.0
+        cell.layer.masksToBounds = false
+        cell.layer.shadowPath = UIBezierPath(roundedRect: cell.bounds, cornerRadius: cell.contentView.layer.cornerRadius).cgPath
         return cell
     }
 }
+// MARK:- CharacterResourceVC: APIManagerDelegate
 extension CharacterResourceVC: APIManagerDelegate {
     func didUpdate(jSONReturnData: [CharactersInfo]) {
         DispatchQueue.main.async {
             self.stringValue = jSONReturnData
             self.charactersInfoCV.reloadData()
-            //print(jSONReturnData.name)
         }
     }
     func didFailWithError(error: Error) {

@@ -15,6 +15,9 @@ class CharactersInfoVC: UIViewController {
     @IBOutlet weak var characterFirstName: UILabel!
     @IBOutlet weak var characterSecondName: UILabel!
     @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var uiView: UIView!
+    @IBOutlet weak var imageUiView: UIView!
+    
     
     var selectedCh = [CharactersInfo]()
     var resourceVCSelectedIndexIs = 0
@@ -22,23 +25,29 @@ class CharactersInfoVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = selectedCh[0].name
-        navigationItem.backButtonTitle = "Back"
-        characterId.layer.borderWidth = 0.8
-        characterId.layer.cornerRadius = 10
-        characterFirstName.layer.borderWidth = 0.8
-        characterFirstName.layer.cornerRadius = 10
-        characterSecondName.layer.borderWidth = 0.8
-        characterSecondName.layer.cornerRadius = 10
-        textView.layer.borderWidth = 0.8
-        textView.layer.cornerRadius = 10
         charactesInfo()
     }
+// MARK:- charactesInfo Display Content and also shadow the objects
     func charactesInfo() {
+        // MARK:- set objects shadow
+        uiView.layer.cornerRadius = 25
+        uiView.layer.shadowColor = UIColor.black.cgColor
+        uiView.layer.shadowRadius = 6.0
+        uiView.layer.shadowOpacity = 0.6
+        uiView.layer.shadowOffset = CGSize(width: 0.1, height: 0.1)
+        uiView.layer.masksToBounds = false
+        imageUiView.layer.cornerRadius = 30
+        imageUiView.layer.shadowColor = UIColor.black.cgColor
+        imageUiView.layer.shadowRadius = 8.0
+        imageUiView.layer.shadowOpacity = 0.8
+        imageUiView.layer.shadowOffset = CGSize(width: 0.1, height: 0.1)
+        imageUiView.layer.masksToBounds = false
+        // MARK:- Display Content
         characterId.text = String("\(selectedCh[0].id)")
         if selectedCh[0].description == "" {
-            textView.text = "\(selectedCh[0].name) has no API description\n==>>\nURL: \(selectedCh[0].resourceData[resourceVCSelectedIndexIs].resourceUrl)"
+            textView.text = "<<================>>\n\(selectedCh[0].name) has no API description\n<<================>>\nURL: \(selectedCh[0].resourceData[resourceVCSelectedIndexIs].resourceUrl)"
         }else {
-            textView.text = "\(selectedCh[0].description)\n==>>\nURL: \(selectedCh[0].resourceData[resourceVCSelectedIndexIs].resourceUrl)"
+            textView.text = "<<================>>\n\(selectedCh[0].description)\n<<================>>\nURL: \(selectedCh[0].resourceData[resourceVCSelectedIndexIs].resourceUrl)"
         }
         imageView.kf.setImage(with: URL(string: selectedCh[0].characterImage))
         characterFirstName.text = selectedCh[0].name
@@ -50,6 +59,7 @@ class imageView: UIImageView {
     override public func layoutSubviews() {
         super.layoutSubviews()
         self.roundUpCorners([.bottomLeft, .bottomRight], radius: 30)
+
     }
 }
 extension UIView {

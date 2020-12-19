@@ -11,6 +11,7 @@ protocol APIManagerDelegate {
     func didUpdate(jSONReturnData: [CharactersInfo])
     func didFailWithError(error: Error)
 }
+// MARK:- APIManager
 struct APIManager {
     var delegate: APIManagerDelegate?
     func performRequest(with UrlString: String) {
@@ -30,6 +31,7 @@ struct APIManager {
             task.resume()
         }
     }
+// MARK:- parseJSON
     func parseJSON(_ getAPIData: Data) -> [CharactersInfo]? {
         let decoder = JSONDecoder()
         do {
