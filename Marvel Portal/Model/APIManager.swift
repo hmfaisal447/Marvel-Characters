@@ -31,7 +31,7 @@ struct APIManager {
             task.resume()
         }
     }
-// MARK:- parseJSON
+    // MARK:- parseJSON
     func parseJSON(_ getAPIData: Data) -> [CharactersInfo]? {
         let decoder = JSONDecoder()
         do {

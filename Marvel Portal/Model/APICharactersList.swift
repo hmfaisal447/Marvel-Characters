@@ -32,23 +32,23 @@ struct Result: Codable {
     //let stories: Stories
     //let events: Comics
     //let urls: [URLElement]
-
+    
     //enum CodingKeys: String, CodingKey {
-        //case id, name
-        //case resultDescription = "description"
-        //case modified, thumbnail, resourceURI, comics, series, stories, events, urls
+    //case id, name
+    //case resultDescription = "description"
+    //case modified, thumbnail, resourceURI, comics, series, stories, events, urls
     //}
 }
 
- //MARK: - Comics
+//MARK: - Comics
 struct Comics: Codable {
-//    let available: Int
-//    let collectionURI: String
+    //    let available: Int
+    //    let collectionURI: String
     let items: [ComicsItem]
     //let returned: Int
 }
 
- //MARK: - ComicsItem
+//MARK: - ComicsItem
 struct ComicsItem: Codable {
     let resourceURI: String
     let name: String
@@ -79,7 +79,7 @@ struct ComicsItem: Codable {
 struct Thumbnail: Codable {
     let path: String
     let thumbnailExtension: Extension
-
+    
     enum CodingKeys: String, CodingKey {
         case path
         case thumbnailExtension = "extension"

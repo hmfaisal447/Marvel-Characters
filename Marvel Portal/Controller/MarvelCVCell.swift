@@ -13,7 +13,4 @@ class MarvelCVCell: UICollectionViewCell {
     @IBOutlet weak var characterImage: UIImageView!
     @IBOutlet weak var characterResourceName: UILabel!
     @IBOutlet weak var characterResourceUrl: UILabel!
-    
-    
-    
 }

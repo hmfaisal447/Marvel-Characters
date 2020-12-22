@@ -27,9 +27,9 @@ class CharactersInfoVC: UIViewController {
         navigationItem.title = selectedCh[0].name
         charactesInfo()
     }
-// MARK:- charactesInfo Display Content and also shadow the objects
+    // MARK:- charactesInfo Display Content and also shadow the objects
     func charactesInfo() {
-        // MARK:- set objects shadow
+        // MARK:- objects shadow
         uiView.layer.cornerRadius = 25
         uiView.layer.shadowColor = UIColor.black.cgColor
         uiView.layer.shadowRadius = 6.0
@@ -45,9 +45,9 @@ class CharactersInfoVC: UIViewController {
         // MARK:- Display Content
         characterId.text = String("\(selectedCh[0].id)")
         if selectedCh[0].description == "" {
-            textView.text = "<<================>>\n\(selectedCh[0].name) has no API description\n<<================>>\nURL: \(selectedCh[0].resourceData[resourceVCSelectedIndexIs].resourceUrl)"
+            textView.text = "\(K.contentSeperationStyle)\n\(selectedCh[0].name) has no API description\n\(K.contentSeperationStyle)\nURL: \(selectedCh[0].resourceData[resourceVCSelectedIndexIs].resourceUrl)"
         }else {
-            textView.text = "<<================>>\n\(selectedCh[0].description)\n<<================>>\nURL: \(selectedCh[0].resourceData[resourceVCSelectedIndexIs].resourceUrl)"
+            textView.text = "\(K.contentSeperationStyle)\n\(selectedCh[0].description)\n\(K.contentSeperationStyle)\nURL: \(selectedCh[0].resourceData[resourceVCSelectedIndexIs].resourceUrl)"
         }
         imageView.kf.setImage(with: URL(string: selectedCh[0].characterImage))
         characterFirstName.text = selectedCh[0].name
@@ -59,7 +59,6 @@ class imageView: UIImageView {
     override public func layoutSubviews() {
         super.layoutSubviews()
         self.roundUpCorners([.bottomLeft, .bottomRight], radius: 30)
-
     }
 }
 extension UIView {

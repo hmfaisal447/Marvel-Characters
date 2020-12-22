@@ -12,9 +12,8 @@ class CharacterResourceVC: UIViewController {
     @IBOutlet weak var charactersInfoCV: UICollectionView!
     
     var apiManager = APIManager()
-    var stringValue = [CharactersInfo]()
+    var charactersInfo = [CharactersInfo]()
     var indexValueIs = 0
-    var innerIndex = 0
     var selectedCharacterIs = [CharactersInfo]()
     var resourceVCSelectedIndex = 0
     
@@ -29,7 +28,7 @@ class CharacterResourceVC: UIViewController {
         navigationItem.title = selectedCharacterIs[0].name
     }
     override func viewWillDisappear(_ animated: Bool) {
-        navigationItem.title = "Back"
+        navigationItem.title = K.Back
     }
     
     // MARK:- prepareSegue
@@ -43,7 +42,6 @@ class CharacterResourceVC: UIViewController {
 // MARK:- UICollectionViewDelegate, UICollectionViewDataSource
 extension CharacterResourceVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        innerIndex = selectedCharacterIs[indexValueIs].resourceData.count
         return selectedCharacterIs[indexValueIs].resourceData.count
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -55,6 +53,7 @@ extension CharacterResourceVC: UICollectionViewDelegate, UICollectionViewDataSou
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: K.resourceIdentifier, for: indexPath) as! MarvelCVCell
         cell.characterResourceName.text = data.resourceName
         cell.characterResourceUrl.text = data.resourceUrl
+        
         cell.contentView.layer.cornerRadius = 15.0
         cell.contentView.layer.shadowColor = UIColor.black.cgColor
         cell.contentView.layer.masksToBounds = true
@@ -71,7 +70,7 @@ extension CharacterResourceVC: UICollectionViewDelegate, UICollectionViewDataSou
 extension CharacterResourceVC: APIManagerDelegate {
     func didUpdate(jSONReturnData: [CharactersInfo]) {
         DispatchQueue.main.async {
-            self.stringValue = jSONReturnData
+            self.charactersInfo = jSONReturnData
             self.charactersInfoCV.reloadData()
         }
     }

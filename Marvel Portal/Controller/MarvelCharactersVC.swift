@@ -13,13 +13,17 @@ class MarvelCharactersVC: UIViewController {
     @IBOutlet weak var charactersNameCV: UICollectionView!
     
     let searchController = UISearchController()
-    var stringValue = [CharactersInfo]()
+    var charactersInfo = [CharactersInfo]()
+    var filteredData = [CharactersInfo]()
     var apiManager = APIManager()
     var indexValue = 0
     var selectedCharacter = [CharactersInfo]()
-
+    var searching = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         charactersNameCV.dataSource = self
         charactersNameCV.delegate = self
         apiManager.delegate = self
@@ -27,14 +31,18 @@ class MarvelCharactersVC: UIViewController {
         searchController.delegate = self
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
-        
-
     }
+    
     override func viewWillAppear(_ animated: Bool) {
-        navigationItem.title = "Marvel Characters"
+        let titleAttributes = [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 25)
+            
+         ]
+         self.navigationController?.navigationBar.titleTextAttributes = titleAttributes
+        navigationItem.title = K.navigationTitle
     }
     override func viewWillDisappear(_ animated: Bool) {
-        navigationItem.title = "Back"
+        navigationItem.title = K.Back
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let nextViewController = segue.destination as? CharacterResourceVC {
@@ -45,21 +53,26 @@ class MarvelCharactersVC: UIViewController {
 // MARK:- Characters Name CollectionView Extenssion
 extension MarvelCharactersVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return stringValue.count
+        if searching {
+            return filteredData.count
+        }else {
+            return charactersInfo.count
+        }
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         indexValue = indexPath.item
-        let data = stringValue[indexValue]
+        let data = charactersInfo[indexValue]
         selectedCharacter = [data]
+        navigationItem.searchController = nil
         performSegue(withIdentifier: K.segueCharactersInfo, sender: self)
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let data = stringValue[indexPath.item]
+        let data = filteredData[indexPath.item]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: K.CVcellIdentity, for: indexPath) as! MarvelCVCell
         cell.charactersNameLabel.text = data.name
         cell.IDLabel.text = String(data.id)
         cell.characterImage.kf.setImage(with: URL(string: data.characterImage))
+        
         cell.characterImage.layer.cornerRadius = 10
         cell.contentView.layer.cornerRadius = 15.0
         cell.contentView.layer.shadowColor = UIColor.black.cgColor
@@ -70,7 +83,6 @@ extension MarvelCharactersVC: UICollectionViewDelegate, UICollectionViewDataSour
         cell.layer.cornerRadius = 15.0
         cell.layer.masksToBounds = false
         cell.layer.shadowPath = UIBezierPath(roundedRect: cell.bounds, cornerRadius: cell.contentView.layer.cornerRadius).cgPath
-        
         return cell
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -81,7 +93,8 @@ extension MarvelCharactersVC: UICollectionViewDelegate, UICollectionViewDataSour
 extension MarvelCharactersVC: APIManagerDelegate {
     func didUpdate(jSONReturnData: [CharactersInfo]) {
         DispatchQueue.main.async {
-            self.stringValue = jSONReturnData
+            self.charactersInfo = jSONReturnData
+            self.filteredData = self.charactersInfo
             self.charactersNameCV.reloadData()
         }
     }
@@ -89,16 +102,27 @@ extension MarvelCharactersVC: APIManagerDelegate {
         print(error)
     }
 }
-
+// MARK:- UISearchController
 extension MarvelCharactersVC: UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
-        
+        filteredData = []
+        let searchBar = searchController.searchBar
+        let searchText = searchBar.text!
+        if searchText != "" {
+            for searchItem in charactersInfo {
+                if searchItem.name.lowercased().contains(searchText.lowercased()) {
+                    filteredData.append(searchItem)
+                    searching = true
+                    self.charactersNameCV.reloadData()
+                }
+            }
+        }else {
+            print("please enter some text")
+            filteredData = charactersInfo
+            self.charactersNameCV.reloadData()
+        }
     }
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print(searchText)
-    }
-    func initSearchController()
-    {
+    func initSearchController() {
         searchController.loadViewIfNeeded()
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -107,6 +131,5 @@ extension MarvelCharactersVC: UISearchControllerDelegate, UISearchResultsUpdatin
         definesPresentationContext = true
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
-        //searchController.searchBar.scopeButtonTitles = ["All", "Rect", "Square", "Oct", "Circle", "Triangle"]
     }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 struct CharactersInfo {
-    let name: String
+    var name: String
     let id: Int
     let characterImage: String
     let description: String
